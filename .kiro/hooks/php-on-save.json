@@ -1,0 +1,15 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "PHP Syntax Check & Test on Save",
+      "trigger": "PostFileSave",
+      "matcher": "\\.php$",
+      "action": {
+        "type": "command",
+        "command": "pwsh -NoProfile -Command \"\\n$input_json = $null\\ntry { $input_json = $input | ConvertFrom-Json -ErrorAction Stop } catch {}\\n\\n# 保存されたファイルパスを取得（stdin JSON の filePath フィールド）\\n$filePath = if ($input_json -and $input_json.filePath) { $input_json.filePath } else { '' }\\n\\nif (-not $filePath) {\\n    Write-Host '[PHP Hook] ファイルパスを取得できませんでした。スキップします。'\\n    exit 0\\n}\\n\\nWrite-Host \\\"[PHP Hook] 構文チェック中: $filePath\\\"\\n\\n# ── Step 1: php -l による構文チェック ──────────────────────────\\n$lintResult = & php -l $filePath 2>&1\\n$lintExit   = $LASTEXITCODE\\n\\nif ($lintExit -ne 0) {\\n    # 構文エラーあり: エラー内容を stderr に出力して終了コード 2 で終了\\n    $errorText = $lintResult -join \\\"`n\\\"\\n    Write-Error \\\"[PHP Syntax Error] $filePath`n$errorText\\\"\\n    exit 2\\n}\\n\\nWrite-Host '[PHP Hook] 構文チェック: OK'\\n\\n# ── Step 2: テストスイートの実行 ────────────────────────────────\\n# このプロジェクトは composer を使用しないため vendor/bin/phpunit は存在しない。\\n# tests/run.php が存在すればそれを実行し、なければスキップする。\\n\\n$projectRoot = Split-Path -Parent (Split-Path -Parent $filePath)\\n\\n$phpunit   = Join-Path $projectRoot 'vendor/bin/phpunit'\\n$testScript = Join-Path $projectRoot 'tests/run.php'\\n\\nif (Test-Path $phpunit) {\\n    Write-Host '[PHP Hook] PHPUnit を実行中...'\\n    $testResult = & php $phpunit --colors=never 2>&1\\n    $testExit   = $LASTEXITCODE\\n} elseif (Test-Path $testScript) {\\n    Write-Host '[PHP Hook] tests/run.php を実行中...'\\n    $testResult = & php $testScript 2>&1\\n    $testExit   = $LASTEXITCODE\\n} else {\\n    Write-Host '[PHP Hook] テストスイートが見つかりません。スキップします。'\\n    exit 0\\n}\\n\\nif ($testExit -ne 0) {\\n    $errorText = $testResult -join \\\"`n\\\"\\n    Write-Error \\\"[PHP Test Failure] テストが失敗しました。`n$errorText\\\"\\n    exit 2\\n}\\n\\nWrite-Host '[PHP Hook] すべてのテストが成功しました。'\\nexit 0\\n\"",
+        "timeout": 30
+      }
+    }
+  ]
+}

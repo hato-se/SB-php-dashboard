@@ -1,0 +1,19 @@
+# 認証情報・設定ファイル（絶対にコミットしない）
+# /config.php = ルート直下のみを対象（src/Config/Config.php は除外しない）
+/config.php
+
+# キャッシュファイル
+cache/*.json
+
+# composer（使用しないが念のため）
+/vendor/
+composer.lock
+
+# OS・エディタ固有ファイル
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# ログ
+*.log

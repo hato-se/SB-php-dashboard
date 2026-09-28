@@ -1,0 +1,769 @@
+/* ============================================================
+   CSS カスタムプロパティ
+   ============================================================ */
+:root {
+    /* カラーパレット */
+    --color-bg:            #f0f4f8;
+    --color-surface:       #ffffff;
+    --color-border:        #e2e8f0;
+    --color-text:          #1e293b;
+    --color-text-muted:    #64748b;
+    --color-primary:       #2563eb;
+    --color-primary-hover: #1d4ed8;
+
+    /* 温度ゾーン別カラー */
+    --color-temp-cold:     #0ea5e9; /* 〜15℃  寒い  */
+    --color-temp-cool:     #22d3ee; /* 15〜20℃ 涼しい */
+    --color-temp-comfort:  #22c55e; /* 20〜26℃ 快適  */
+    --color-temp-warm:     #f97316; /* 26〜30℃ 暖かい */
+    --color-temp-hot:      #ef4444; /* 30℃〜  暑い   */
+
+    /* 湿度ゲージカラー */
+    --color-hum-low:       #facc15; /* 〜40%  乾燥  */
+    --color-hum-comfort:   #22c55e; /* 40〜60% 快適  */
+    --color-hum-high:      #3b82f6; /* 60%〜  多湿  */
+
+    /* ステータス */
+    --color-online-bg:     #dcfce7;
+    --color-online-text:   #16a34a;
+    --color-offline-bg:    #fee2e2;
+    --color-offline-text:  #dc2626;
+    --color-error-bg:      #fef2f2;
+    --color-error-text:    #b91c1c;
+
+    /* バッテリー */
+    --color-battery-ok:    #22c55e;
+    --color-battery-low:   #f97316;
+    --color-battery-crit:  #ef4444;
+
+    /* 形状 */
+    --radius-sm: 8px;
+    --radius:    14px;
+    --radius-lg: 20px;
+    --shadow:    0 2px 12px rgba(0, 0, 0, 0.07);
+    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12);
+}
+
+/* ============================================================
+   リセット・ベース
+   ============================================================ */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    font-family: 'Helvetica Neue', Arial, 'Hiragino Sans', 'Meiryo', sans-serif;
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+/* ============================================================
+   ヘッダー
+   ============================================================ */
+.site-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.875rem 1.5rem;
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+    box-shadow: var(--shadow);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.site-header__left {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+}
+
+.site-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--color-text);
+}
+
+.site-header__meta {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    white-space: nowrap;
+}
+
+.site-header__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
+}
+
+/* ============================================================
+   更新ボタン
+   ============================================================ */
+.btn-refresh {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    background: var(--color-primary);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.btn-refresh:hover:not(:disabled) {
+    background: var(--color-primary-hover);
+}
+
+.btn-refresh:active:not(:disabled) {
+    transform: scale(0.97);
+}
+
+.btn-refresh:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+.btn-refresh__icon {
+    display: inline-block;
+    transition: transform 0.6s ease;
+}
+
+.btn-refresh--spinning .btn-refresh__icon {
+    animation: spin 0.7s linear infinite;
+}
+
+/* ============================================================
+   メインコンテンツ
+   ============================================================ */
+.main-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1.75rem 1.25rem 3rem;
+}
+
+/* ============================================================
+   エラーバナー
+   ============================================================ */
+.error-banner {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.625rem;
+    padding: 0.875rem 1.125rem;
+    margin-bottom: 1.25rem;
+    background: var(--color-error-bg);
+    color: var(--color-error-text);
+    border: 1px solid #fca5a5;
+    border-radius: var(--radius-sm);
+    font-size: 0.875rem;
+    line-height: 1.5;
+}
+
+/* ============================================================
+   ローディング
+   ============================================================ */
+.loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 4rem 0;
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+}
+
+.spinner {
+    width: 36px;
+    height: 36px;
+    border: 3px solid var(--color-border);
+    border-top-color: var(--color-primary);
+    border-radius: 50%;
+    animation: spin 0.75s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ============================================================
+   デバイスグリッド
+   ============================================================ */
+.device-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.25rem;
+}
+
+/* ============================================================
+   デバイスカード
+   ============================================================ */
+.device-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.device-card:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+}
+
+/* カード上部カラーバー（温度ゾーンで色が変わる） */
+.device-card__bar {
+    height: 5px;
+    background: var(--bar-color, var(--color-primary));
+}
+
+/* カードボディ */
+.device-card__body {
+    padding: 1.125rem 1.25rem 0.875rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+}
+
+/* ── カードヘッダー（デバイス名 + バッジ） ── */
+.device-card__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+.device-card__name {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--color-text);
+    line-height: 1.3;
+    /* 長い名前は2行で折り返して省略 */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.device-card__type {
+    font-size: 0.6875rem;
+    color: var(--color-text-muted);
+    margin-top: 0.125rem;
+}
+
+.status-badge {
+    flex-shrink: 0;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    padding: 0.2rem 0.6rem;
+    border-radius: 9999px;
+    text-transform: uppercase;
+}
+
+.status-badge--online {
+    background: var(--color-online-bg);
+    color: var(--color-online-text);
+}
+
+.status-badge--offline {
+    background: var(--color-offline-bg);
+    color: var(--color-offline-text);
+}
+
+/* ── メトリクス行（温度・湿度） ── */
+.device-card__metrics {
+    display: flex;
+    align-items: flex-end;
+    gap: 1.75rem;
+}
+
+.metric {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+}
+
+.metric__label {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+}
+
+.metric__row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.25rem;
+}
+
+.metric__value {
+    font-size: 2.75rem;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: var(--metric-color, var(--color-text));
+    font-variant-numeric: tabular-nums;
+}
+
+.metric__unit {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    padding-bottom: 0.2rem;
+}
+
+/* オフライン時のメトリクス表示 */
+.metric--offline .metric__value {
+    font-size: 1.5rem;
+    color: var(--color-offline-text);
+}
+
+/* ── 湿度ゲージ ── */
+.humidity-gauge {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    width: 100%;
+}
+
+.humidity-gauge__track {
+    width: 100%;
+    height: 6px;
+    background: var(--color-border);
+    border-radius: 9999px;
+    overflow: hidden;
+}
+
+.humidity-gauge__fill {
+    height: 100%;
+    border-radius: 9999px;
+    background: var(--gauge-color, var(--color-hum-comfort));
+    transition: width 0.6s ease;
+}
+
+.humidity-gauge__labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.6rem;
+    color: var(--color-text-muted);
+}
+
+/* ── バッテリー表示 ── */
+.battery {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+}
+
+.battery__icon {
+    display: inline-flex;
+    align-items: center;
+    gap: 1px;
+}
+
+.battery__bar {
+    width: 22px;
+    height: 10px;
+    border: 1.5px solid currentColor;
+    border-radius: 2px;
+    padding: 1.5px;
+    position: relative;
+}
+
+.battery__bar::after {
+    content: '';
+    position: absolute;
+    right: -4px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 2.5px;
+    height: 5px;
+    background: currentColor;
+    border-radius: 0 1px 1px 0;
+}
+
+.battery__fill {
+    height: 100%;
+    border-radius: 1px;
+    background: var(--battery-color, var(--color-battery-ok));
+    transition: width 0.4s ease;
+}
+
+.battery__level {
+    font-weight: 600;
+    color: var(--battery-color, var(--color-battery-ok));
+}
+
+/* ── カードフッター（更新日時） ── */
+.device-card__footer {
+    padding: 0.6rem 1.25rem;
+    font-size: 0.6875rem;
+    color: var(--color-text-muted);
+    border-top: 1px solid var(--color-border);
+    background: #f8fafc;
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+}
+
+/* ============================================================
+   デバイスなしメッセージ
+   ============================================================ */
+.no-devices {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: var(--color-text-muted);
+    padding: 4rem 1rem;
+    line-height: 2;
+    font-size: 0.9375rem;
+}
+
+.no-devices__icon {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+/* ============================================================
+   フッター
+   ============================================================ */
+.site-footer {
+    text-align: center;
+    padding: 1.5rem;
+    font-size: 0.6875rem;
+    color: var(--color-text-muted);
+    border-top: 1px solid var(--color-border);
+}
+
+/* ============================================================
+   ユーティリティ
+   ============================================================ */
+[hidden] {
+    display: none !important;
+}
+
+/* ============================================================
+   レスポンシブ
+   ============================================================ */
+@media (max-width: 480px) {
+    .site-header {
+        padding: 0.75rem 1rem;
+    }
+
+    .site-header__meta {
+        display: none;
+    }
+
+    .site-header__actions {
+        gap: 0.375rem;
+    }
+
+    .btn-settings,
+    .btn-refresh {
+        padding: 0.45rem 0.75rem;
+        font-size: 0.75rem;
+    }
+
+    .main-content {
+        padding: 1.25rem 0.875rem 2.5rem;
+    }
+
+    .device-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .metric__value {
+        font-size: 2.25rem;
+    }
+}
+
+/* ============================================================
+   設定ボタン（ヘッダー内）
+   ============================================================ */
+.btn-settings {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    background: var(--color-surface);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.btn-settings:hover {
+    background: var(--color-bg);
+    border-color: #cbd5e1;
+}
+
+.btn-settings:active {
+    transform: scale(0.97);
+}
+
+/* ============================================================
+   モーダル バックドロップ
+   ============================================================ */
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    z-index: 100;
+    /* フェードイン */
+    animation: fadeInBackdrop 0.18s ease;
+}
+
+@keyframes fadeInBackdrop {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* ============================================================
+   モーダル 本体
+   ============================================================ */
+.modal {
+    background: var(--color-surface);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    width: 100%;
+    max-width: 420px;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    animation: slideUpModal 0.2s ease;
+    overflow: hidden;
+}
+
+@keyframes slideUpModal {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.modal__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--color-border);
+    flex-shrink: 0;
+}
+
+.modal__title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-text);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.modal__close {
+    background: none;
+    border: none;
+    font-size: 1.1rem;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--radius-sm);
+    line-height: 1;
+    transition: background 0.12s, color 0.12s;
+}
+
+.modal__close:hover {
+    background: var(--color-bg);
+    color: var(--color-text);
+}
+
+.modal__body {
+    padding: 1rem 1.25rem;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.modal__description {
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+    margin-bottom: 0.875rem;
+}
+
+.modal__footer {
+    display: flex;
+    gap: 0.625rem;
+    padding: 0.875rem 1.25rem;
+    border-top: 1px solid var(--color-border);
+    flex-shrink: 0;
+}
+
+/* ============================================================
+   セカンダリボタン（モーダルフッター）
+   ============================================================ */
+.btn-secondary {
+    flex: 1;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    background: var(--color-bg);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+}
+
+.btn-secondary:hover {
+    background: #e2e8f0;
+    border-color: #cbd5e1;
+}
+
+/* ============================================================
+   デバイス表示トグルリスト
+   ============================================================ */
+.visibility-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+}
+
+.visibility-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.625rem 0.75rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background: var(--color-bg);
+    transition: background 0.12s;
+}
+
+.visibility-item:hover {
+    background: #f1f5f9;
+}
+
+/* デバイス情報ブロック */
+.visibility-item__info {
+    flex: 1;
+    min-width: 0;
+}
+
+.visibility-item__name {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.visibility-item__type {
+    font-size: 0.6875rem;
+    color: var(--color-text-muted);
+    margin-top: 0.1rem;
+}
+
+/* トグルスイッチ */
+.toggle {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 22px;
+    flex-shrink: 0;
+}
+
+.toggle__input {
+    /* スクリーンリーダー向けに残す（視覚的には非表示） */
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle__track {
+    position: absolute;
+    inset: 0;
+    background: #cbd5e1;
+    border-radius: 9999px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.toggle__track::after {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 16px;
+    height: 16px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    transition: transform 0.2s;
+}
+
+/* チェック時（表示 ON） */
+.toggle__input:checked + .toggle__track {
+    background: var(--color-primary);
+}
+
+.toggle__input:checked + .toggle__track::after {
+    transform: translateX(18px);
+}
+
+/* フォーカス時のアウトライン */
+.toggle__input:focus-visible + .toggle__track {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+/* ============================================================
+   非表示状態のデバイスカード
+   ============================================================ */
+.device-card--hidden {
+    display: none !important;
+}
+
+/* ============================================================
+   すべて非表示時のメッセージ
+   ============================================================ */
+#no-visible-devices {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: var(--color-text-muted);
+    padding: 3rem 1rem;
+    font-size: 0.9375rem;
+    line-height: 1.8;
+}

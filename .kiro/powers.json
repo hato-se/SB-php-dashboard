@@ -1,0 +1,61 @@
+{
+  "version": "1.0",
+  "permissions": {
+    "shell": {
+      "allow": [
+        {
+          "description": "PHP syntax linting",
+          "command": "php",
+          "args": ["-l"]
+        },
+        {
+          "description": "PHP built-in development server",
+          "command": "php",
+          "args": ["-S", "localhost:8000"]
+        }
+      ]
+    },
+    "fileSystem": {
+      "read": [
+        {
+          "description": "Project source files",
+          "path": "r:/switchbot-php-dashboard/src/**"
+        },
+        {
+          "description": "Public web files",
+          "path": "r:/switchbot-php-dashboard/public/**"
+        },
+        {
+          "description": "Template files",
+          "path": "r:/switchbot-php-dashboard/templates/**"
+        },
+        {
+          "description": "Configuration files",
+          "path": "r:/switchbot-php-dashboard/config.example.php"
+        },
+        {
+          "description": "Cache directory",
+          "path": "r:/switchbot-php-dashboard/cache/**"
+        }
+      ],
+      "write": [
+        {
+          "description": "Project source files",
+          "path": "r:/switchbot-php-dashboard/src/**"
+        },
+        {
+          "description": "Public web files",
+          "path": "r:/switchbot-php-dashboard/public/**"
+        },
+        {
+          "description": "Template files",
+          "path": "r:/switchbot-php-dashboard/templates/**"
+        },
+        {
+          "description": "Cache directory (API response cache)",
+          "path": "r:/switchbot-php-dashboard/cache/**"
+        }
+      ]
+    }
+  }
+}

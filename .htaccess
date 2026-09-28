@@ -1,0 +1,22 @@
+# =============================================================
+# SwitchBot ダッシュボード — アクセス制御
+# =============================================================
+
+# config.php への直接 HTTP アクセスを拒否
+<Files "config.php">
+    Require all denied
+</Files>
+
+# config.example.php への直接アクセスも拒否
+<Files "config.example.php">
+    Require all denied
+</Files>
+
+# cache/ ディレクトリ内の JSON ファイルへのアクセスを拒否
+<FilesMatch "\.json$">
+    Require all denied
+</FilesMatch>
+
+# PHP のエラー表示をオフ（本番環境向け。デバッグ時は config.php の DEBUG_MODE を true に）
+php_flag display_errors off
+php_flag log_errors on
